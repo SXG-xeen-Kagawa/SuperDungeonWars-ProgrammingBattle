@@ -82,6 +82,8 @@ Super Dungeon Wars Programming Battle は、4つの冒険者パーティーが�
 
 行動できなくなったキャラクターは、一定時間後に起き上がり、再び行動や攻撃ができるようになります。HPや死亡の概念はありません。
 
+![他のパーティーメンバーを攻撃するイメージ](Images/GameRules_Combat.png)
+
 ### 相打ち
 
 両者が同時に攻撃し、互いの攻撃が命中した場合は相打ちになります。
@@ -90,7 +92,7 @@ Super Dungeon Wars Programming Battle は、4つの冒険者パーティーが�
 
 攻撃を仕掛ける側にも隙が生まれるため、攻撃のタイミング、味方との連携、宝箱を運ぶ仲間の護衛が重要です。
 
-![隣接攻撃と相打ちのイメージ](Images/GameRules_Combat.png)
+
 
 ## 勝敗の決め方
 
