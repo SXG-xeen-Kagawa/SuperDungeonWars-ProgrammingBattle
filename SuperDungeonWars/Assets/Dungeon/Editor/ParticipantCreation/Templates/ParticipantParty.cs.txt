@@ -1,0 +1,42 @@
+using UnityEngine;
+
+namespace #PARTICIPANT_NAME#
+{
+    public sealed class #PARTICIPANT_NAME#Party : ComPartyBase
+    {
+        private void Start()
+        {
+            // パーティー開始時の初期化を書けます。
+            //
+            // メンバーごとの担当、探索状態、財宝を持ち帰る方針などを
+            // フィールドに記録しておくと、SXG_OnPartyThink で利用できます。
+        }
+
+        /// <summary>
+        /// パーティー全体の思考タイミングで呼ばれます。
+        ///
+        /// 主に「各メンバーをどのセルへ向かわせるか」を決めます。
+        /// 個々のキャラクターの財宝取得・攻撃判断は Character 側に書きます。
+        ///
+        /// 迷路探索の基本的な流れ:
+        /// 1. SXG_GetKnownMap() で自チームの既知マップを取得します。
+        /// 2. 既知セル同士の経路探索には KnownMapView.CanMove() を使います。
+        /// 3. 未知領域を探索するときは、既知セルから
+        ///    TryGetOpenNeighbor() で未観測の隣接セルを探します。
+        /// 4. SXG_SetMemberMoveTargetCell() で各メンバーの目的地セルを設定します。
+        ///
+        /// StrategicParty.cs には、既知領域の BFS、未知領域への探索、
+        /// 財宝回収、出口への帰還、敵の財宝所持者の追跡の実装例があります。
+        /// </summary>
+        protected override void SXG_OnPartyThink()
+        {
+            // パーティー全体の探索・戦闘・帰還方針を書けます。
+            //
+            // 例:
+            // if (SXG_TryGetMemberInfo(0, out PartyMemberInfo memberInfo))
+            // {
+            //     SXG_SetMemberMoveTargetCell(0, new Vector2Int(0, 0));
+            // }
+        }
+    }
+}

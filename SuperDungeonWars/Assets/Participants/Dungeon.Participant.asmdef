@@ -1,0 +1,16 @@
+{
+    "name": "Dungeon.Participant",
+    "rootNamespace": "",
+    "references": [
+        "GUID:a5bdff9bf85bc5e4386b6cc5e23d0cdc"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

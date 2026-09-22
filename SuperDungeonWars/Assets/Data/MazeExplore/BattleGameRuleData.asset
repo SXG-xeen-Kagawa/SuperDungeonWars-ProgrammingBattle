@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d96c30a10878bf0478165e637991e51b, type: 3}
+  m_Name: BattleGameRuleData
+  m_EditorClassIdentifier: Assembly-CSharp::BattleGameRuleData
+  m_battleDurationSeconds: 120
+  m_normalMoveSpeed: 3
+  m_carryingTreasureMoveSpeed: 2
+  m_attackRange: 1.4
+  m_attackStartRange: 1
+  m_attackAngleDegrees: 120
+  m_attackAnimationFrameRate: 30
+  m_attackHitFrame: 5
+  m_attackCooldownSeconds: 1.5
+  m_knockoutSeconds: 5
+  m_knockbackSpeed: 3.5
+  m_treasureScatterMinDistance: 0.8
+  m_treasureScatterMaxDistance: 1.6
+  m_treasurePickupLockSeconds: 1.5
+  m_attackMotionLockSeconds: 1.5
+  m_knockoutRecoveryMoveLockSeconds: 0.5
+  m_deliveryThrowLockSeconds: 1.2
+  m_deliveryThrowHorizontalImpulse: 7
+  m_deliveryThrowUpwardImpulse: 2.8
+  m_deliveryThrowTorqueImpulse: 3
+  m_deliveryTreasureVisibleSeconds: 1.2
+  m_treasureValueRanges:
+  - m_treasureType: 0
+    m_minValue: 80
+    m_maxValue: 120
+  - m_treasureType: 1
+    m_minValue: 260
+    m_maxValue: 340

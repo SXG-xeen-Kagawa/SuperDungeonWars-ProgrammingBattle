@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f47e064d8c376b94bbec0daf14e0da32, type: 3}
+  m_Name: ParticipantAccessoryCatalog
+  m_EditorClassIdentifier: Dungeon.GameSystem::ParticipantAccessoryCatalog
+  m_entries:
+  - m_displayName: "\u30D4\u30F3\u30AF\u306E\u773C\u93E1"
+    m_prefab: {fileID: 2994062545966355776, guid: b9b0994ce6b5a3a47a42336443a460f5, type: 3}
+  - m_displayName: "\u8D64\u306E\u773C\u93E1"
+    m_prefab: {fileID: 1749740341605875279, guid: f27f7eb58efddf04391620887e3de7a3, type: 3}
+  - m_displayName: "\u9752\u306E\u773C\u93E1"
+    m_prefab: {fileID: 7142979952316811053, guid: 67448fda9f6147a43952f39a15f2b817, type: 3}
+  - m_displayName: "\u3050\u308B\u3050\u308B\u773C\u93E1"
+    m_prefab: {fileID: 201497074460315388, guid: 136df3e5ccbf8f74bbb95aa6068ac68e, type: 3}
+  - m_displayName: "\u5DE5\u4F5C\u773C\u93E1"
+    m_prefab: {fileID: 5001955631590359152, guid: c8b7872241fee6843917cdfc211af41c, type: 3}
+  - m_displayName: "\u9EA6\u308F\u3089\u5E3D\u5B50"
+    m_prefab: {fileID: 963135880507198043, guid: a8981d3f67f0fd249877a38a297488a1, type: 3}
+  - m_displayName: "FM728\u63A2\u691C\u968A\u5E3D\u5B50"
+    m_prefab: {fileID: 1807206860409513334, guid: 8a635fb4a351d2f4c96b09e5821aed18, type: 3}
+  - m_displayName: "FM728\u30D9\u30EC\u30FC\u5E3D"
+    m_prefab: {fileID: 4604645109707860597, guid: 7ed7a642163c9c34899bd3e993e948c3, type: 3}
+  - m_displayName: "\u8336\u8272\u3044\u30D9\u30EC\u30FC\u5E3D"
+    m_prefab: {fileID: 4544739018016959557, guid: 8759174fccf617f4eb12a535896ff432, type: 3}
+  - m_displayName: "\u5B87\u5B99\u3078"
+    m_prefab: {fileID: 725811381525547542, guid: 3fff6824ec4d1b04badca8eb9aa17d61, type: 3}
+  - m_displayName: "\u30D8\u30C3\u30C9\u30D5\u30A9\u30F3"
+    m_prefab: {fileID: 1376313883717189356, guid: f8d074ff7cc8a7741b8a3ec847f393ab, type: 3}
+  - m_displayName: "\u306D\u3053\u30DF\u30DF"
+    m_prefab: {fileID: 1008373395981579485, guid: 868852cba449ab042af2c0b8c52546a6, type: 3}
+  - m_displayName: "\u5B87\u5B99\u4EBA\u30DE\u30B9\u30AF"
+    m_prefab: {fileID: 9443806275384389, guid: 9751cd9385f4505438cf9c0688e54ce8, type: 3}
