@@ -11,6 +11,8 @@ using UnityEngine;
 public static class ParticipantSubmissionZipExporter
 {
     private const string ParticipantRootPath = "Assets/Participants";
+    private const string OfficialTeamIconFolderPath =
+        "Assets/Dungeon/GameAssets/Icons";
 
     private const string MemberPrefabsFieldName = "m_memberPrefabs";
     private const string CreatorDisplayNameFieldName =
@@ -55,9 +57,9 @@ public static class ParticipantSubmissionZipExporter
         {
             EditorUtility.DisplayDialog(
                 "Prefabを保存してください",
-                "Party Prefabに未保存の変更があります。\n\n"
-                + "Prefab Mode右上の Save を押して保存してから、"
-                + "もう一度「提出用ZIPを作成」を実行してください。",
+                "Prefabに未保存の変更があります。\n\n"
+                + "Prefab Mode右上の Save ボタンで保存してから、"
+                + "もう一度ZIP出力を実行してください。",
                 "OK");
 
             return;
@@ -73,14 +75,6 @@ public static class ParticipantSubmissionZipExporter
 
             return;
         }
-
-        EditorUtility.DisplayDialog(
-            "保存を確認してください",
-            "提出用ZIPには、ディスクへ保存済みのファイルが"
-            + "含まれます。\n\n"
-            + "Prefab Mode右上の Save でParty／Character Prefabを"
-            + "保存してから、ZIPを作成してください。",
-            "OK");
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
@@ -108,6 +102,11 @@ public static class ParticipantSubmissionZipExporter
         string participantName =
             Path.GetFileName(participantFolderPath);
 
+        string submissionZipName =
+            participantName.StartsWith("Party", StringComparison.Ordinal)
+                ? "Dungeon" + participantName.Substring("Party".Length)
+                : participantName;
+
         string projectRootPath =
             Directory.GetParent(Application.dataPath).FullName;
 
@@ -124,7 +123,7 @@ public static class ParticipantSubmissionZipExporter
         string zipFullPath =
             Path.Combine(
                 submissionFolderFullPath,
-                participantName + ".zip");
+                submissionZipName + ".zip");
 
         try
         {
@@ -152,16 +151,15 @@ public static class ParticipantSubmissionZipExporter
             return;
         }
 
-        int result = EditorUtility.DisplayDialogComplex(
+        bool openOutputFolder = EditorUtility.DisplayDialog(
             "提出用ZIPを作成しました",
-            "提出用ZIPを作成しました。\n\n"
-            + "出力先:\n"
-            + zipFullPath,
+            "出力先:\n"
+            + zipFullPath
+            + "\n\n出力先フォルダを開きますか？",
             "出力先を開く",
-            "OK",
-            string.Empty);
+            "閉じる");
 
-        if (result == 0)
+        if (openOutputFolder)
         {
             EditorUtility.RevealInFinder(zipFullPath);
         }
@@ -303,14 +301,24 @@ public static class ParticipantSubmissionZipExporter
         string teamIconAssetPath =
             AssetDatabase.GetAssetPath(teamIcon);
 
-        if (string.IsNullOrEmpty(teamIconAssetPath)
-            || !IsAssetPathInsideFolder(
+        bool isParticipantTeamIcon =
+            !string.IsNullOrEmpty(teamIconAssetPath)
+            && IsAssetPathInsideFolder(
                 teamIconAssetPath,
-                participantFolderPath))
+                participantFolderPath);
+
+        bool isOfficialTeamIcon =
+            !string.IsNullOrEmpty(teamIconAssetPath)
+            && IsAssetPathInsideFolder(
+                teamIconAssetPath,
+                OfficialTeamIconFolderPath);
+
+        if (string.IsNullOrEmpty(teamIconAssetPath)
+            || (!isParticipantTeamIcon && !isOfficialTeamIcon))
         {
             errors.Add(
-                "チームアイコンは参加者フォルダ内の画像を"
-                + "設定してください。\n"
+                "チームアイコンは参加者フォルダ内、または運営提供"
+                + "アイコンフォルダ内の画像を設定してください。\n"
                 + "現在: "
                 + (string.IsNullOrEmpty(teamIconAssetPath)
                     ? "アセットパス不明"

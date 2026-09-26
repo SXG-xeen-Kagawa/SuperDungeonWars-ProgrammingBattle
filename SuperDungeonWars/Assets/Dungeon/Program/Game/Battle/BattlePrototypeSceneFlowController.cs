@@ -244,6 +244,11 @@ public sealed class BattlePrototypeSceneFlowController : MonoBehaviour
 
     private IEnumerator CoSceneCountDown()
     {
+        if (m_battleGameController != null)
+        {
+            m_battleGameController.SnapSpectatorCameraToCurrentFocus();
+        }
+
         SetBattleHudVisible(true);
 
         // カウントダウンの待機画面を表示しておく 

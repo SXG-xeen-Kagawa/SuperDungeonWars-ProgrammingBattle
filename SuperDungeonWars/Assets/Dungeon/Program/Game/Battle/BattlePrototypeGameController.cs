@@ -146,6 +146,14 @@ public partial class BattlePrototypeGameController : MonoBehaviour
         get { return m_spectatorFocusedPartyIndex; }
     }
 
+    public void SnapSpectatorCameraToCurrentFocus()
+    {
+        if (m_battleSpectatorCameraController != null)
+        {
+            m_battleSpectatorCameraController.SnapToCurrentFocus();
+        }
+    }
+
     public IReadOnlyList<TreasureChest> GetExportedTreasureChestsTeamIndex(
             int systemTeamIndex)
     {

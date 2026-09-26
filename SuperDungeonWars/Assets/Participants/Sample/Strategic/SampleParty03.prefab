@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StrategicParty
   m_memberPrefabs: {fileID: 3501945869702316494, guid: a164173b7488ed14eb1ef2ebf6bf1b12, type: 3}
   m_creatorDisplayName: "\u5449\u7528"
-  m_teamDisplayName: "\u795E\u7B97\u63A2\u7D22\u56E3"
+  m_affiliation: "\u6881\u5C71\u6CCA"
+  m_teamDisplayName: "\u98DB\u7ADC\u8ECD"
   m_teamSimpleDescription: "\u9AD8\u5EA6\u6226\u7565"
   m_teamIconSprite: {fileID: 21300000, guid: 4f4f30e9948cb824abf0d9481c82f7a3, type: 3}

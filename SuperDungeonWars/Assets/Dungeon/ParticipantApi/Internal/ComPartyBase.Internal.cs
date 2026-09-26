@@ -42,6 +42,16 @@ public abstract partial class ComPartyBase
         }
     }
 
+    public string Affiliation
+    {
+        get
+        {
+            return string.IsNullOrEmpty(m_affiliation)
+                ? "所属名"
+                : m_affiliation;
+        }
+    }
+
     public string TeamDisplayName
     {
         get

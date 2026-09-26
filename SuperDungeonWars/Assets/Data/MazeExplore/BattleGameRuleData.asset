@@ -38,5 +38,5 @@ MonoBehaviour:
     m_minValue: 80
     m_maxValue: 120
   - m_treasureType: 1
-    m_minValue: 260
-    m_maxValue: 340
+    m_minValue: 230
+    m_maxValue: 310

@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TreasureReturnParty
   m_memberPrefabs: {fileID: 4347105280302348947, guid: bf6917543364d9145933e2ea74a39904, type: 3}
   m_creatorDisplayName: "\u6211\u304C\u540D"
+  m_affiliation: "\u682A\u5F0F\u4F1A\u793E\u30B8\u30FC\u30F3"
   m_teamDisplayName: "\u304A\u5B9D\u304A\u304B\u3048\u308A\u968A"
   m_teamSimpleDescription: "\u6301\u3061\u5E30\u308A\u512A\u5148"
   m_teamIconSprite: {fileID: 21300000, guid: adadf1ccfdb5a6b4898defedbe25a377, type: 3}

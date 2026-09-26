@@ -283,6 +283,38 @@ public sealed class BattleSpectatorCameraController : MonoBehaviour
         }
     }
 
+    public void SnapToCurrentFocus()
+    {
+        if (!TryGetFocusData(
+                out Vector3 focusPosition,
+                out Vector3 backwardDirection,
+                out float cameraDistance,
+                out float cameraHeight,
+                out float sideOffset))
+        {
+            return;
+        }
+
+        Vector3 desiredCameraPosition = CalculateDesiredCameraPosition(
+            focusPosition,
+            backwardDirection,
+            cameraDistance,
+            cameraHeight,
+            sideOffset
+        );
+
+        Vector3 collisionAdjustedCameraPosition = m_enableWallAvoidance
+            ? ResolveWallCollision(focusPosition, desiredCameraPosition)
+            : desiredCameraPosition;
+
+        m_shouldWarpOnNextUpdate = true;
+        m_keepCurrentRotationDuringFocusTransition = false;
+
+        UpdateCameraTransform(
+            focusPosition,
+            collisionAdjustedCameraPosition);
+    }
+
 
     private bool BeginFocusTransition(Vector3 nextFocusPosition)
     {

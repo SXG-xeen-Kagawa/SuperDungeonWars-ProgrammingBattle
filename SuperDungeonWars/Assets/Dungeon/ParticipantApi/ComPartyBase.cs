@@ -11,20 +11,31 @@ using UnityEngine;
 /// </summary>
 public abstract partial class ComPartyBase : MonoBehaviour
 {
+    [Tooltip("このパーティーのメンバーとして使用するキャラクターのプレハブです。")]
     [SerializeField] private ComCharacterBase m_memberPrefabs;
 
-    [Header("Spectator UI")]
+    [Header("制作者・パーティー情報")]
+    [Tooltip("参加者の表示名を入力します。")]
     [SerializeField] private string m_creatorDisplayName;
+
+    [Tooltip("学校名や団体名などの所属を入力します。所属がない場合は空欄で構いません。")]
+    [SerializeField] private string m_affiliation;
+
+    [Tooltip("パーティーの表示名を入力します。")]
     [SerializeField] private string m_teamDisplayName;
 
+    [Tooltip("パーティーの特徴を短く入力します。")]
     [TextArea(1, 2)]
     [SerializeField] private string m_teamSimpleDescription;
 
+    [Tooltip("観戦表示などで使用するパーティーのアイコン画像です。")]
     [SerializeField] private Sprite m_teamIconSprite;
 
     protected virtual void Awake()
     {
     }
+
+    
 
     /// <summary>
     /// 参加者が現在までに観測した既知マップを取得します。
