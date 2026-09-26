@@ -109,9 +109,12 @@ protected bool SXG_TryGetReturnEntranceCell(
     out Vector2Int returnEntranceCell)
 ```
 
-自パーティーの帰還先となる搬出口セルを取得します。
+自パーティーに対応する入口のセル座標を取得します。
 
 取得に成功した場合は `true` を返し、`returnEntranceCell` にセル座標を設定します。
+
+このメソッドが返すのは、自パーティーに対応する入口です。宝箱の持ち帰り先がその入口に限定されるわけではありません。宝箱は4チームのどの入口へ持ち帰っても、運んだチームの得点になります。
+
 
 ### SXG_GetMemberCount
 
