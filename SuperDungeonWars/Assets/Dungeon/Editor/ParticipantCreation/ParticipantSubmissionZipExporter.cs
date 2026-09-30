@@ -102,10 +102,13 @@ public static class ParticipantSubmissionZipExporter
         string participantName =
             Path.GetFileName(participantFolderPath);
 
-        string submissionZipName =
+        string connpassId =
             participantName.StartsWith("Party", StringComparison.Ordinal)
-                ? "Dungeon" + participantName.Substring("Party".Length)
+                ? participantName.Substring("Party".Length)
                 : participantName;
+
+        string submissionZipName =
+            $"SXG2026_Dungeon_{connpassId}_{DateTime.Now:yyyyMMdd_HHmmss}";
 
         string projectRootPath =
             Directory.GetParent(Application.dataPath).FullName;
