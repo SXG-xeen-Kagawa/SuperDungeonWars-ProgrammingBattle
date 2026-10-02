@@ -50,6 +50,38 @@ public sealed class CharacterRagdollController : MonoBehaviour
     private Coroutine m_recoveryCoroutine;
     private float m_lastImpactSoundTime = -Mathf.Infinity;
 
+
+
+    [SerializeField]
+    private float m_punchHitEffectHeightOffset = 0.3f;
+
+    [SerializeField]
+    private float m_lowKickHitEffectHeightOffset = 0.05f;
+
+    public bool TryGetAttackHitEffectPosition(
+        bool isLowKick,
+        out Vector3 worldPosition)
+    {
+        worldPosition = Vector3.zero;
+
+        if (m_hips == null)
+        {
+            return false;
+        }
+
+        float heightOffset = isLowKick
+            ? m_lowKickHitEffectHeightOffset
+            : m_punchHitEffectHeightOffset;
+
+        worldPosition =
+            m_hips.position + Vector3.up * heightOffset;
+
+        return true;
+    }
+
+
+
+
     public bool IsRagdollActive
     {
         get { return m_isRagdollActive; }

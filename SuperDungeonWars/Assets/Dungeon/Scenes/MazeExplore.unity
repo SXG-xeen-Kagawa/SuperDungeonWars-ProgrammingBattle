@@ -3902,6 +3902,7 @@ MonoBehaviour:
   m_resultTreasureDisposeUpwardSpeed: 3.6
   m_resultTreasureDisposeTorqueImpulse: -0.5
   m_resultTreasureDisposeHideAfterSeconds: 3
+  m_winnerConfettiLocalPosition: {x: 0, y: 3, z: 1.8}
 --- !u!4 &964461731
 Transform:
   m_ObjectHideFlags: 0

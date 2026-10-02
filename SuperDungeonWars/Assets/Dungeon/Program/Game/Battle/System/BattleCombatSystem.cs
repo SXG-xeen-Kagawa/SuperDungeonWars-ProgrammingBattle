@@ -8,6 +8,7 @@ public class BattleCombatSystem
         public ComCharacterBase m_attacker;
         public ComCharacterBase m_target;
         public float m_hitTime;
+        public bool m_isLowKick;
     }
 
     public enum AttackFocusTargetState
@@ -612,6 +613,7 @@ public class BattleCombatSystem
         pendingAttack.m_target = target;
         pendingAttack.m_hitTime =
             Time.time + m_ruleData.AttackHitDelaySeconds;
+        pendingAttack.m_isLowKick = isDownTarget;
 
         m_pendingAttacks.Add(pendingAttack);
 
@@ -688,6 +690,8 @@ public class BattleCombatSystem
             {
                 continue;
             }
+
+            PlayAttackHitParticle(attack);
 
             KnockOutCharacter(
                 attack.m_attacker,
@@ -935,9 +939,6 @@ public class BattleCombatSystem
 
         animationController.SetKnockedOut(
             isKnockedOut);
-
-        // SE再生：攻撃が当たった 
-        DungeonSound.PlaySeIfVisible(SeId.AttackHit, character.transform.position);
     }
 
     private bool SetKnockedOutPresentation(
@@ -970,6 +971,9 @@ public class BattleCombatSystem
                 attackForwardDirection,
                 attackerWorldPosition,
                 m_ruleData.KnockbackSpeed);
+
+            // SE再生：攻撃が当たった 
+            DungeonSound.PlaySeIfVisible(SeId.AttackHit, character.transform.position);
         }
         else
         {
@@ -998,4 +1002,74 @@ public class BattleCombatSystem
         return runtimeTransform != null
             && runtimeTransform.gameObject.activeInHierarchy;
     }
+
+
+
+    private void PlayAttackHitParticle(PendingAttack attack)
+    {
+        if (!DungeonParticle.IsAvailable)
+        {
+            return;
+        }
+
+        ExplorerAgent attackerAgent =
+            attack.m_attacker.GetExplorerAgent() as ExplorerAgent;
+
+        ExplorerAgent targetAgent =
+            attack.m_target.GetExplorerAgent() as ExplorerAgent;
+
+        if (attackerAgent == null || targetAgent == null)
+        {
+            return;
+        }
+
+        Transform attackerTransform =
+            attackerAgent.GetRuntimeTransform();
+
+        if (attackerTransform == null ||
+            !m_teamIndexByCharacter.TryGetValue(
+                attack.m_attacker, out int teamIndex) ||
+            attackerAgent.PartyMemberIndex < 0)
+        {
+            return;
+        }
+
+        Vector3 forward = attackerTransform.forward;
+        forward.y = 0f;
+
+        if (forward.sqrMagnitude <= 0.0001f)
+        {
+            return;
+        }
+
+        Vector3 hitPosition;
+
+        CharacterRagdollController ragdollController =
+            targetAgent.GetCharacterRagdollController();
+
+        if (ragdollController == null ||
+            !ragdollController.TryGetAttackHitEffectPosition(
+                attack.m_isLowKick, out hitPosition))
+        {
+            // ボーン参照がない場合の演出用フォールバックです。
+            hitPosition = targetAgent.WorldPosition
+                + Vector3.up * (attack.m_isLowKick ? 0.05f : 0.3f);
+        }
+
+        Color startColor =
+            CharacterTeamColorConstants.GetCharacterColor(
+                teamIndex,
+                attackerAgent.PartyMemberIndex);
+
+        Quaternion rotation = Quaternion.LookRotation(
+            forward.normalized,
+            Vector3.up);
+
+        DungeonParticle.Play(
+            ParticleId.AttackHit,
+            hitPosition,
+            startColor: startColor,
+            worldRotation: rotation);
+    }
+
 }

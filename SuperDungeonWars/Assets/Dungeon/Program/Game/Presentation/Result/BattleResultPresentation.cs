@@ -740,6 +740,11 @@ public sealed class BattleResultPresentation : MonoBehaviour
                         BattleTeamPreviewPose
                             .ResultVictory);
 
+                // 優勝ポーズと同時に紙吹雪を開始する。
+                m_battleTeamPreviewController
+                    .PlayWinnerConfettiTeamIndex(
+                        teamIndex);
+
                 continue;
             }
 

@@ -206,6 +206,21 @@ public sealed class BattleTeamPreviewController : MonoBehaviour
     private float m_resultTreasureDisposeHideAfterSeconds =
         2.0f;
 
+
+
+    [Header("Winner Confetti")]
+
+    [SerializeField]
+    private Vector3 m_winnerConfettiLocalPosition =
+    new Vector3(0.0f, 2.3f, 0.0f);
+
+    private readonly DungeonParticleInstance[]
+        m_winnerConfettiByTeam =
+            new DungeonParticleInstance[TeamCount];
+
+
+
+
     private readonly List<BattleTeamPreviewStage>
         m_spawnedPreviewStages =
             new List<BattleTeamPreviewStage>();
@@ -884,6 +899,8 @@ public sealed class BattleTeamPreviewController : MonoBehaviour
     public void Hide(
         bool restoreMembers)
     {
+        StopAllWinnerConfetti(); // 追加
+
         if (restoreMembers)
         {
             RestoreMembers();
@@ -1994,14 +2011,19 @@ public sealed class BattleTeamPreviewController : MonoBehaviour
         newRestoreData.Member = member;
         newRestoreData.SystemTeamIndex =
             systemTeamIndex;
+
+        // 表示用Transformではなく、
+        // ランタイムが保持する位置を復元位置として保存する。
         newRestoreData.WorldPosition =
-            runtimeTransform != null
-                ? runtimeTransform.position
+            explorerAgent != null
+                ? explorerAgent.WorldPosition
                 : member.transform.position;
+
         newRestoreData.WorldRotation =
             runtimeTransform != null
                 ? runtimeTransform.rotation
                 : member.transform.rotation;
+
         newRestoreData.CarriedTreasureChest =
             member.GetCarriedTreasure() as TreasureChest;
 
@@ -2490,4 +2512,71 @@ public sealed class BattleTeamPreviewController : MonoBehaviour
 
         m_isResultTreasurePhysicsSimulationManual = false;
     }
+
+
+
+
+    #region エフェクト 
+
+    public bool PlayWinnerConfettiTeamIndex(
+        int teamIndex)
+    {
+        if (teamIndex < 0
+            || teamIndex >= TeamCount
+            || !DungeonParticle.IsAvailable)
+        {
+            return false;
+        }
+
+        // 同じチームへの重複生成を防ぐ。
+        if (m_winnerConfettiByTeam[teamIndex] != null)
+        {
+            return true;
+        }
+
+        BattleTeamPreviewStage previewStage =
+            GetPreviewStageTeamIndex(teamIndex);
+
+        if (previewStage == null)
+        {
+            return false;
+        }
+
+        Vector3 worldPosition =
+            previewStage.transform.TransformPoint(
+                m_winnerConfettiLocalPosition);
+
+        DungeonParticleInstance instance =
+            DungeonParticle.Play(
+                ParticleId.WinnerConfetti,
+                worldPosition,
+                parent: previewStage.transform,
+                layer: GetPreviewLayerTeamIndex(teamIndex));
+
+        m_winnerConfettiByTeam[teamIndex] = instance;
+
+        return instance != null;
+    }
+
+    private void StopAllWinnerConfetti()
+    {
+        for (int teamIndex = 0;
+             teamIndex < TeamCount;
+             teamIndex++)
+        {
+            DungeonParticleInstance instance =
+                m_winnerConfettiByTeam[teamIndex];
+
+            if (instance != null)
+            {
+                DungeonParticle.Stop(
+                    instance,
+                    clearImmediately: true);
+            }
+
+            m_winnerConfettiByTeam[teamIndex] = null;
+        }
+    }
+    #endregion
+
 }
