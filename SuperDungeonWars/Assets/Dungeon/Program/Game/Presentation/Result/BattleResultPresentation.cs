@@ -233,6 +233,9 @@ public sealed class BattleResultPresentation : MonoBehaviour
             currentTotalValues,
             isDefeatPoseApplied);
 
+        // 最終順位と優勝演出を反映した直後に、全体で1回再生する。
+        DungeonSound.PlaySe(SeId.WinnerJingle);
+
         if (m_resultFinishHoldDuration > 0.0f)
         {
             yield return new WaitForSecondsRealtime(
@@ -332,7 +335,7 @@ public sealed class BattleResultPresentation : MonoBehaviour
 
 
             m_battleTeamPreviewController
-        .SetPreviewPoseTeamIndex(
+                .SetPreviewPoseTeamIndex(
                     teamIndex,
                     BattleTeamPreviewPose
                         .ResultTreasureReact);
@@ -363,10 +366,16 @@ public sealed class BattleResultPresentation : MonoBehaviour
                     treasureResult.TreasureId,
                     true);
 
+            // 宝箱を開いたタイミングで、宝箱ごとに1回再生する。
+            DungeonSound.PlaySe(SeId.TreasureOpen);
+
             m_battleTeamPreviewController
                 .PlayResultTreasureGoldCoinFountain(
                     treasureResult.TreasureId,
                     addedValue);
+
+            // 金貨噴出演出の開始に合わせて、宝箱ごとに1回再生する。
+            DungeonSound.PlaySe(SeId.Coin);
         }
 
         Camera previewCamera = null;

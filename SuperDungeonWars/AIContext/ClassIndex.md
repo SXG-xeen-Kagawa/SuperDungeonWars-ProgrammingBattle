@@ -1,10 +1,10 @@
 # Class Index
 
-- GeneratedAt: 2026-09-21 12:21:05
+- GeneratedAt: 2026-10-01 15:17:07
 - ScanRoots: Assets/Dungeon/Program, Assets/Dungeon/ParticipantApi, Assets/Dungeon/Participants, Assets/Dungeon/Editor
-- TotalCount: 100
-- MonoBehaviourCount: 31
-- NonMonoBehaviourCount: 69
+- TotalCount: 103
+- MonoBehaviourCount: 32
+- NonMonoBehaviourCount: 71
 
 ## MonoBehaviours
 
@@ -49,6 +49,7 @@
 - Fields:
   - `[SerializeField] private ComCharacterBase m_memberPrefabs`
   - `[SerializeField] private string m_creatorDisplayName`
+  - `[SerializeField] private string m_affiliation`
   - `[SerializeField] private string m_teamDisplayName`
   - `[SerializeField] private string m_teamSimpleDescription`
   - `[SerializeField] private Sprite m_teamIconSprite`
@@ -90,7 +91,7 @@
 - Fields:
   - `[SerializeField] private MazeRenderer m_mazeRenderer`
   - `[SerializeField] private Transform m_partyRoot`
-  - `[SerializeField] private ComPartyBase[] m_partyPrefabs`
+  - `[SerializeField] private BattlePartyRegistry m_battlePartyRegistry`
   - `[SerializeField] private ExplorerAgent m_runtimeCharacterPrefab`
   - `[SerializeField] private MazeGenerationSettings m_mazeGenerationSettings`
   - `[SerializeField] private float m_mazeCellSize`
@@ -102,9 +103,9 @@
   - `[SerializeField] private BattleSpectatorFocusSettings m_spectatorFocusSettings`
   - `[SerializeField] private CharacterMannequinReplacer m_characterMannequinReplacer`
   - `[SerializeField] private BattleGameRuleData m_battleGameRuleData`
+  - `private BattlePartyRegistry m_battlePartyRegistry`
   - `private ExplorerAgent m_runtimeCharacterPrefab`
-  - `private MazeGenerationSettings m_mazeGenerationSettings`
-  - `... (23 more)`
+  - `... (24 more)`
 - Properties: なし
 - Events:
   - `public event BattleEndedDelegate BattleEnded`
@@ -116,6 +117,7 @@
   - `void Update()`
   - `void OnDestroy()`
 - PublicMethods:
+  - `void SnapSpectatorCameraToCurrentFocus()`
   - `IReadOnlyList<TreasureChest> GetExportedTreasureChestsTeamIndex(int systemTeamIndex)`
   - `void PrepareBattle()`
   - `void StartBattle()`
@@ -145,6 +147,7 @@
   - `BattleEndReason`
   - `BattleGameRuleData`
   - `BattleParticipantSystem`
+  - `BattlePartyRegistry`
   - `BattleResultData`
   - `BattleSpectatorCameraController`
   - `BattleSpectatorFocusIndicatorView`
@@ -159,8 +162,7 @@
   - `KnownMapDebugTextView`
   - `MazeData`
   - `MazeGenerationSettings`
-  - `MazeRenderer`
-  - `... (3 more)`
+  - `... (4 more)`
 - BodyReferencedTypes:
   - `BattleDeveloperSpectatorSettings`
   - `BattleGameConstants`
@@ -1207,6 +1209,7 @@
 - PublicMethods:
   - `void FadeIn(FadeCompletedDelegate onCompleted = null)`
   - `void FadeOut(FadeCompletedDelegate onCompleted = null)`
+  - `void FadeOutImmediately()`
   - `void TransitionToScene(string sceneName)`
   - `void ShowImmediately()`
   - `void HideImmediately()`
@@ -1216,8 +1219,8 @@
   - `void EnsureInstance()`
   - `void ValidateReferences()`
   - `void CreateMaterial()`
-  - `void StartTransition(bool isFadeIn, FadeCompletedDelegate onCompleted)`
-  - `IEnumerator PlayTransitionCoroutine(bool isFadeIn, FadeCompletedDelegate onCompleted)`
+  - `void StartTransition(bool isFadeOut, FadeCompletedDelegate onCompleted)`
+  - `IEnumerator PlayTransitionCoroutine(bool isFadeOut, FadeCompletedDelegate onCompleted)`
   - `IEnumerator TransitionToSceneCoroutine(string sceneName)`
   - `void StopCurrentTransition()`
   - `void PrepareGrid()`
@@ -1226,7 +1229,7 @@
   - `void TryAddFrontierCell(Vector2Int cell, bool[,] visitedCells, bool[,] queuedCells)`
   - `bool IsValidCell(Vector2Int cell)`
   - `void FillMask(float value)`
-  - `void ApplyCellsUntil(int targetCellCount, bool isFadeIn)`
+  - `void ApplyCellsUntil(int targetCellCount, bool isFadeOut)`
 - SignatureReferencedTypes: なし
 - BodyReferencedTypes: なし
 
@@ -1269,6 +1272,7 @@
   - `void SetFocusTreasureChest(TreasureChest treasureChest)`
   - `void SetFocusTreasureChest(TreasureChest treasureChest, Vector3 desiredBackwardDirection)`
   - `void ClearFocus()`
+  - `void SnapToCurrentFocus()`
   - `void SetFixedBackwardDirection(Vector3 backwardDirection)`
 - OtherMethods:
   - `bool BeginFocusTransition(Vector3 nextFocusPosition)`
@@ -1334,6 +1338,50 @@
   - `TreasureChest`
 - BodyReferencedTypes:
   - `CharacterTeamColorConstants`
+
+#### BattleSpectatorTeamLabels
+
+- Kind: class
+- Namespace: (global)
+- BaseTypes: MonoBehaviour
+- Path: `Assets/Dungeon/Program/Game/Presentation/Spectator/BattleSpectatorTeamLabels.cs`
+- Fields:
+  - `[SerializeField] private BattlePrototypeGameController m_battleGameController`
+  - `[SerializeField] private Camera m_spectatorCamera`
+  - `[SerializeField] private RectTransform m_labelLayer`
+  - `[SerializeField] private TextMeshProUGUI m_labelTemplate`
+  - `[SerializeField] private float m_labelHeight`
+  - `[SerializeField] private float m_verticalOffset`
+  - `[SerializeField] private float m_labelSpacing`
+  - `[SerializeField] private LayerMask m_wallOcclusionMask`
+  - `[SerializeField] private Color[] m_teamTextColors`
+  - `private Color[] m_teamTextColors`
+  - `private List<TextMeshProUGUI> m_labels`
+  - `private List<ComCharacterBase> m_representatives`
+  - `private List<Rect> m_visibleLabelRects`
+  - `private int m_lastUpdatedFrame`
+- Properties: なし
+- Events: なし
+- Delegates: なし
+- UnityEvents:
+  - `void Awake()`
+  - `void OnEnable()`
+  - `void OnDisable()`
+- PublicMethods: なし
+- OtherMethods:
+  - `void HideTemplate()`
+  - `void RefreshLabels()`
+  - `Color GetTeamTextColor(int teamIndex)`
+  - `void EnsureLabelCount(int count)`
+  - `bool TryChooseRepresentative(ComPartyBase party, ComCharacterBase previous, Vector2 labelSize, out ComCharacterBase chosen, out Vector2 chosenPosition, out Rect chosenRect)`
+  - `bool IsHiddenByWall(Vector3 worldPosition)`
+  - `bool OverlapsExistingLabel(Rect candidate)`
+  - `string SafeText(string value)`
+- SignatureReferencedTypes:
+  - `BattlePrototypeGameController`
+  - `ComCharacterBase`
+  - `ComPartyBase`
+- BodyReferencedTypes: なし
 
 ### Folder: Assets/Dungeon/Program/Game/Presentation/TeamIntroduction
 
@@ -2506,6 +2554,45 @@
 - OtherMethods: なし
 - SignatureReferencedTypes:
   - `ComPartyBase`
+- BodyReferencedTypes: なし
+
+#### Entry
+
+- Kind: class
+- Namespace: (global)
+- BaseTypes: -
+- Path: `Assets/Dungeon/Program/Game/Data/ParticipantAccessoryCatalog.cs`
+- Fields:
+  - `[SerializeField] private string m_displayName`
+  - `[SerializeField] private GameObject m_prefab`
+- Properties: なし
+- Events: なし
+- Delegates: なし
+- UnityEvents: なし
+- PublicMethods: なし
+- OtherMethods: なし
+- SignatureReferencedTypes: なし
+- BodyReferencedTypes: なし
+
+#### ParticipantAccessoryCatalog
+
+- Kind: class
+- Namespace: (global)
+- BaseTypes: ScriptableObject
+- Path: `Assets/Dungeon/Program/Game/Data/ParticipantAccessoryCatalog.cs`
+- Fields:
+  - `[SerializeField] private Entry[] m_entries`
+  - `[SerializeField] private string m_displayName`
+  - `[SerializeField] private GameObject m_prefab`
+  - `private Entry[] m_entries`
+- Properties: なし
+- Events: なし
+- Delegates: なし
+- UnityEvents: なし
+- PublicMethods: なし
+- OtherMethods: なし
+- SignatureReferencedTypes:
+  - `Entry`
 - BodyReferencedTypes: なし
 
 ### Folder: Assets/Dungeon/Program/Game/Debug

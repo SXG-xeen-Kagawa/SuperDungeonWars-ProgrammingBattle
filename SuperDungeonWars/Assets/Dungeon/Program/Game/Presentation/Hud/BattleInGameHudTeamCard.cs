@@ -102,6 +102,9 @@ public class BattleInGameHudTeamCard : MonoBehaviour
                     Quaternion.identity;
 
                 visual.m_isDropAnimating = false;
+
+                // SE再生：宝箱獲得 
+                DungeonSound.PlaySe(SeId.TreasureExport);
             }
         }
     }
@@ -275,6 +278,7 @@ public class BattleInGameHudTeamCard : MonoBehaviour
             * visual.m_rotationDirection;
 
         m_treasureIconVisuals.Add(visual);
+
     }
 
     private void LayoutTreasureIcons()

@@ -108,6 +108,9 @@ public sealed class BattleSpectatorCameraController : MonoBehaviour
     private bool m_shouldWarpOnNextUpdate;
     private bool m_keepCurrentRotationDuringFocusTransition;
 
+    private Camera m_camera = null;
+
+
 
     /// <summary>
     /// 現在キャラクターを追従中かどうかを返す。
@@ -137,6 +140,8 @@ public sealed class BattleSpectatorCameraController : MonoBehaviour
         {
             SetFocusTreasureChest(m_initialFocusTreasureChest);
         }
+
+        m_camera = GetComponentInChildren<Camera>(true);
     }
 
     private void LateUpdate()
@@ -681,6 +686,13 @@ public sealed class BattleSpectatorCameraController : MonoBehaviour
         }
 
         m_lastStableBackwardDirection = backwardDirection.normalized;
+    }
+
+
+
+    public Camera GetCamera()
+    {
+        return m_camera;
     }
 
 

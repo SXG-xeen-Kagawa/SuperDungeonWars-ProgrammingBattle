@@ -125,6 +125,10 @@ public class BattleTreasureSystem
             return;
         }
 
+        // SE再生：宝箱を拾う 
+        DungeonSound.PlaySeIfVisible(SeId.TreasurePickUp, character.transform.position);
+
+
         Debug.Log(
             character.name
             + " が "
@@ -193,6 +197,7 @@ public class BattleTreasureSystem
             Time.time + lockSeconds);
 
         animationController.PlayDeliveryThrow();
+
     }
 
     public void CancelDeliveryThrow(
@@ -298,6 +303,9 @@ public class BattleTreasureSystem
             CancelDeliveryThrow(character);
             return;
         }
+
+        // SE再生：宝箱投げ
+        DungeonSound.PlaySeIfVisible(SeId.TreasureThrow, character.transform.position);
 
         m_pendingDeliveryTreasureByCharacter.Remove(
             character);

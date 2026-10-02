@@ -220,6 +220,9 @@ public sealed class BattlePrototypeSceneFlowController : MonoBehaviour
         // 1フレーム待たないと紹介UI表示の生成が重すぎて、MakeTransitionのアニメーションが見れない 
         yield return null;
 
+        // BGM再生：チーム紹介 
+        DungeonSound.PlayBgm(BgmId.TeamIntroduction);
+
         // 初回は内部で即時にテーマ画像を全面表示してから開始する。
         // 2試合目以降は、前試合のFadeOut状態からそのまま開始する。
         yield return CoRevealByMazeTransition();
@@ -251,6 +254,9 @@ public sealed class BattlePrototypeSceneFlowController : MonoBehaviour
 
         SetBattleHudVisible(true);
 
+        // BGM停止
+        DungeonSound.StopBgm(0.5f);
+
         // カウントダウンの待機画面を表示しておく 
         m_isBattleStartCountdownCompleted = false;
         m_isBattleStartCountdownInputAccepted = false;
@@ -272,6 +278,9 @@ public sealed class BattlePrototypeSceneFlowController : MonoBehaviour
     {
         Debug.Log("[BattleFlow] 試合中。");
 
+        // BGM再生：試合中
+        DungeonSound.PlayBgm(BgmId.Battle);
+
         while (m_sceneFlow == SceneFlow.Playing)
         {
             RefreshDebugTimeScale();
@@ -289,6 +298,9 @@ public sealed class BattlePrototypeSceneFlowController : MonoBehaviour
         Debug.Log(
             "[BattleFlow] 試合終了。"
             + " Enter / Space でリザルトへ進みます。");
+
+        // BGM停止
+        DungeonSound.StopBgm(0.5f);
 
         while (!m_isBattleEndPresentationProceedRequested)
         {
@@ -327,9 +339,13 @@ public sealed class BattlePrototypeSceneFlowController : MonoBehaviour
 
         yield return CoRevealByMazeTransition();
 
+        // BGM再生：リザルト
+        DungeonSound.PlayBgm(BgmId.Result);
+
         // リザルト画面を見せ、観客の視線が集まってから精算を始める。
         yield return CoWaitForProceedKey();
 
+        // リザルト演出 
         if (m_battleResultPresentation != null)
         {
             m_battleResultPresentation
@@ -369,6 +385,9 @@ public sealed class BattlePrototypeSceneFlowController : MonoBehaviour
     private IEnumerator CoSceneFinish()
     {
         Debug.Log("[BattleFlow] Finish。次の試合を開始します。");
+
+        // BGM停止 
+        DungeonSound.StopBgm(0.5f);
 
         // リザルトを完全に隠してから、同じシーンを再ロードする。
         yield return CoCoverByMazeTransition();
@@ -616,6 +635,9 @@ public sealed class BattlePrototypeSceneFlowController : MonoBehaviour
         {
             isCompleted = true;
         });
+
+        // SE再生：画面切り替え 
+        DungeonSound.PlaySe(SeId.ScreenTransition);
 
         while (!isCompleted)
         {

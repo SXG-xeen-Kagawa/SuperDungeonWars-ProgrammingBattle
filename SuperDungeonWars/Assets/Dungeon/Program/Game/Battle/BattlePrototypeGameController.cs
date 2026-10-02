@@ -491,6 +491,10 @@ public partial class BattlePrototypeGameController : MonoBehaviour
             SetDebugSelectedPartyIndex(0);
             m_knownMapDebugTextView.RefreshView();
         }
+
+        // サウンドシステムにカメラを定義する 
+        DungeonSoundManager.Instance.SetTargetCamera(
+            m_battleSpectatorCameraController.GetCamera());
     }
 
 

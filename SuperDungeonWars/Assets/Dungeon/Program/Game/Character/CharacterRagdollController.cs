@@ -24,6 +24,12 @@ public sealed class CharacterRagdollController : MonoBehaviour
     [SerializeField]
     private float m_attackSpinVelocityChange = 2.5f;
 
+    [SerializeField]
+    private float m_impactSoundMinimumSpeed = 2.5f;
+
+    [SerializeField]
+    private float m_impactSoundCooldown = 0.18f;
+
     private static readonly int s_getUpFaceUpTriggerHash =
         Animator.StringToHash("GetUpFaceUp");
 
@@ -42,6 +48,7 @@ public sealed class CharacterRagdollController : MonoBehaviour
     private bool m_isRagdollActive;
     private bool m_isWaitingForGetUpAnimationFinished;
     private Coroutine m_recoveryCoroutine;
+    private float m_lastImpactSoundTime = -Mathf.Infinity;
 
     public bool IsRagdollActive
     {
@@ -129,7 +136,69 @@ public sealed class CharacterRagdollController : MonoBehaviour
         m_ragdollColliders =
             m_ragdollRoot.GetComponentsInChildren<Collider>(true);
 
+        for (int i = 0; i < m_ragdollBodies.Length; i++)
+        {
+            Rigidbody body = m_ragdollBodies[i];
+
+            if (body == null)
+            {
+                continue;
+            }
+
+            CharacterRagdollImpactSensor sensor =
+                body.gameObject.GetComponent<CharacterRagdollImpactSensor>();
+
+            if (sensor == null)
+            {
+                sensor = body.gameObject.AddComponent<CharacterRagdollImpactSensor>();
+            }
+
+            sensor.Bind(this, body);
+        }
+
         SetRagdollPhysicsEnabled(false);
+    }
+
+    internal void OnRagdollImpact(Rigidbody body, Collision collision)
+    {
+        if (!m_isRagdollActive || body == null || collision == null ||
+            IsRagdollBody(collision.rigidbody))
+        {
+            return;
+        }
+
+        float impactSpeed = collision.relativeVelocity.magnitude;
+
+        if (impactSpeed < m_impactSoundMinimumSpeed ||
+            Time.time - m_lastImpactSoundTime < m_impactSoundCooldown)
+        {
+            return;
+        }
+
+        ContactPoint contact = collision.GetContact(0);
+        float volume = Mathf.Clamp01(
+            impactSpeed / Mathf.Max(m_impactSoundMinimumSpeed * 3.0f, 0.01f));
+
+        m_lastImpactSoundTime = Time.time;
+        DungeonSound.PlaySeIfVisible(SeId.WallImpact, contact.point, null, volume);
+    }
+
+    private bool IsRagdollBody(Rigidbody body)
+    {
+        if (body == null || m_ragdollBodies == null)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < m_ragdollBodies.Length; i++)
+        {
+            if (m_ragdollBodies[i] == body)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void FixedUpdate()

@@ -168,15 +168,31 @@ public sealed class BattleStartCountdownPresentation : MonoBehaviour
             m_countdownImage.enabled = true;
         }
 
+        // SE再生：カウントダウン 
+        DungeonSound.PlaySe(SeId.Countdown);
+
+        // カウントダウン表示：３
         yield return CoShowCountdownSprite(
             m_countdown3Sprite);
 
+        // SE再生：カウントダウン 
+        DungeonSound.PlaySe(SeId.Countdown);
+
+        // カウントダウン表示：２
         yield return CoShowCountdownSprite(
             m_countdown2Sprite);
 
+        // SE再生：カウントダウン 
+        DungeonSound.PlaySe(SeId.Countdown);
+
+        // カウントダウン表示：１
         yield return CoShowCountdownSprite(
             m_countdown1Sprite);
 
+        // SE再生：探索開始
+        DungeonSound.PlaySe(SeId.BattleStart);
+
+        // カウントダウン表示：開始 
         ShowSpriteImmediately(m_explorationStartSprite);
         m_countdownImage.transform.localScale = Vector3.one * 2.0f;
 

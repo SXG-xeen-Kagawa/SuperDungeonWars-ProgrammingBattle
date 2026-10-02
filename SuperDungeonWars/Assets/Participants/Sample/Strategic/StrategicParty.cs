@@ -355,18 +355,29 @@ public class StrategicParty : ComPartyBase
             PartyMemberInfo memberInfo;
 
             if (!SXG_TryGetMemberInfo(
-                memberIndex,
-                out memberInfo))
+                    memberIndex,
+                    out memberInfo))
             {
+                continue;
+            }
+
+            // 到着済みでも追跡担当として扱い、
+            // 後段の探索へ流れないようにする。
+            if (memberInfo.CurrentCell == targetCell)
+            {
+                SXG_StopMember(memberIndex);
+
+                reservedMemberIndices.Add(memberIndex);
+                issuedCount++;
                 continue;
             }
 
             Vector2Int nextCell;
 
             if (!TryFindNextStepToTarget(
-                memberInfo.CurrentCell,
-                targetCell,
-                out nextCell))
+                    memberInfo.CurrentCell,
+                    targetCell,
+                    out nextCell))
             {
                 continue;
             }

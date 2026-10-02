@@ -546,27 +546,23 @@ public partial class ExplorerAgent : MonoBehaviour, ICharacterRuntime
         Vector3 worldPosition,
         Vector2Int cellPosition)
     {
-        if (m_mazeData == null ||
-            m_mazeData.IsInside(
-                cellPosition.x,
-                cellPosition.y) == false)
+        if (m_mazeData == null)
         {
             return false;
         }
 
-        Vector3 cellCenter = m_mazeData.CellToWorld(
-            cellPosition.x,
-            cellPosition.y);
+        Vector2Int actualCellPosition;
 
-        float halfCellSize =
-            m_mazeData.CellSize * 0.5f;
+        if (!m_mazeData.TryWorldToCell(
+                worldPosition,
+                out actualCellPosition))
+        {
+            return false;
+        }
 
-        return
-            worldPosition.x >= cellCenter.x - halfCellSize &&
-            worldPosition.x <= cellCenter.x + halfCellSize &&
-            worldPosition.z >= cellCenter.z - halfCellSize &&
-            worldPosition.z <= cellCenter.z + halfCellSize;
+        return actualCellPosition == cellPosition;
     }
+
 
     private void SetPositionToCell(
         Vector2Int cell)

@@ -18,6 +18,9 @@ public sealed class BattleResultTeamLane : MonoBehaviour
     private Image m_teamIconImage;
 
     [SerializeField]
+    private TextMeshProUGUI m_creatorNameText;
+
+    [SerializeField]
     private TextMeshProUGUI m_teamNameText;
 
     [SerializeField]
@@ -149,6 +152,14 @@ public sealed class BattleResultTeamLane : MonoBehaviour
 
             m_teamIconImage.gameObject.SetActive(
                 teamIconSprite != null);
+        }
+
+        if (m_creatorNameText != null)
+        {
+            m_creatorNameText.text =
+                party != null
+                    ? party.CreatorDisplayName
+                    : "制作者 " + (systemTeamIndex + 1);
         }
 
         if (m_teamNameText != null)

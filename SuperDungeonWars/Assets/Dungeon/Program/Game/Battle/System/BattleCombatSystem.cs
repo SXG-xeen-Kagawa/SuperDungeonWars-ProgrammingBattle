@@ -935,6 +935,9 @@ public class BattleCombatSystem
 
         animationController.SetKnockedOut(
             isKnockedOut);
+
+        // SE再生：攻撃が当たった 
+        DungeonSound.PlaySeIfVisible(SeId.AttackHit, character.transform.position);
     }
 
     private bool SetKnockedOutPresentation(

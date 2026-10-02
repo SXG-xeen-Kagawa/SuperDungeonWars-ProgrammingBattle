@@ -88,6 +88,13 @@ public class BattleInGameHud : MonoBehaviour
 
     private bool m_isPresentationVisible = true;
 
+    private int m_lastTimeMinutes = -1;
+    private int m_lastTimeSeconds = -1;
+
+    const float CriticalRemainingTime = 10.0f;
+    const float WarningRemainingTime = 30.0f;
+    const float CautionRemainingTime = 60.0f;
+
 
 
     private void Awake()
@@ -150,6 +157,7 @@ public class BattleInGameHud : MonoBehaviour
         RefreshTeamCards();
     }
 
+
     private void RefreshRemainingTime()
     {
         if (m_remainingTimeText == null)
@@ -167,10 +175,23 @@ public class BattleInGameHud : MonoBehaviour
         int minutes = totalSeconds / 60;
         int seconds = totalSeconds % 60;
 
-        m_remainingTimeText.text =
-            minutes.ToString("00")
-            + ":"
-            + seconds.ToString("00");
+        // テキストの更新 
+        if (minutes != m_lastTimeMinutes || seconds != m_lastTimeSeconds)
+        {
+            m_remainingTimeText.text = string.Format("{0}:{1}", minutes.ToString("00"), seconds.ToString("00"));
+            m_lastTimeMinutes = minutes;
+            m_lastTimeSeconds = seconds;
+
+            // SE再生：残り時間警告 
+            if (remainingSeconds <= 0.0f)
+            {
+                DungeonSound.PlaySe(SeId.BattleEnd);
+            }
+            else if (remainingSeconds <= CriticalRemainingTime)
+            {
+                DungeonSound.PlaySe(SeId.TimeWarning); 
+            }
+        }
 
         RefreshRemainingTimeColor(remainingSeconds);
     }
@@ -219,7 +240,7 @@ public class BattleInGameHud : MonoBehaviour
         // 次の試合開始時には、タイムアップ演出の計測をリセットする。
         m_timeUpStartedUnscaledTime = -1.0f;
 
-        if (remainingSeconds <= 10.0f)
+        if (remainingSeconds <= CriticalRemainingTime)
         {
             float flashRate = GetFlashRate(
                 m_criticalFlashSpeed);
@@ -233,7 +254,7 @@ public class BattleInGameHud : MonoBehaviour
             return;
         }
 
-        if (remainingSeconds <= 30.0f)
+        if (remainingSeconds <= WarningRemainingTime)
         {
             m_remainingTimeText.color =
                 m_warningRemainingTimeColor;
@@ -241,7 +262,7 @@ public class BattleInGameHud : MonoBehaviour
             return;
         }
 
-        if (remainingSeconds <= 60.0f)
+        if (remainingSeconds <= CautionRemainingTime)
         {
             m_remainingTimeText.color =
                 m_cautionRemainingTimeColor;
